@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script will build the Firefox binary package you downloaded
-# Usage: sh sloff.sh <your decision of firefox tarball>
+# Usage: sh sloff.sh <firefox tarball path>
 
 # latest-firefox is 
 # Copyright 2013 Ruari Oedegaard, Olso, Norway
@@ -40,7 +40,8 @@ else
 fi
 
 # Work out the latest stable Firefox if VERSION is unset
-VERSION=`echo $1 | sed -nr 's|firefox-(.*)\.tar\.bz2|\1|p'`
+VERSION=$(basename `echo $1 | sed -nr 's|firefox-(.*)\.tar\.bz2|\1|p'`)
+echo "VERSION is " $VERSION;
 
 TMP=${TMP:-/tmp}
 OUTPUT=${OUTPUT:-/tmp}
@@ -135,8 +136,8 @@ install -m 644 "${0}" "$REPACKDIR/src/$SCRIPT"
 
 # Check if the current directory contains the Firefox binary package,
 # otherwise download it.
-if [ -e firefox-$VERSION.tar.bz2 ]; then
-  cp firefox-$VERSION.tar.bz2 "$REPACKDIR/src/"
+if [ -e $1 ]; then
+  cp $1 "$REPACKDIR/src/"
 else
   echo hell happens
   wget -P "$REPACKDIR/src" $FIREFOXPKG
